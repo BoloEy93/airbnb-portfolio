@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: fct_neighbourhood_summary
+    description: "Aggregated Airbnb metrics per NYC neighbourhood. Excludes price outliers and neighbourhoods with fewer than 10 listings."
+    columns:
+      - name: neighbourhood
+        description: "Neighbourhood name from Airbnb's cleaned geography."
+        data_tests:
+          - not_null
+          - unique:
+              config:
+                severity: warn
+      - name: borough
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Manhattan', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island']
+              quote: true
+      - name: listing_count
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 10"
+      - name: median_price
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "> 0"
+      - name: avg_price
+        data_tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= median_price"
+              config:
+                severity: warn # Note: 3 neighbourhoods have mean < median due to left-skewed price distributions
+
+  - name: fct_listings_by_room_type
+    description: "Aggregated Airbnb metrics per borough and room type."
+    columns:
+      - name: borough
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Manhattan', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island']
+              quote: true
+      - name: room_type
+        data_tests:
+          - not_null
+      - name: listing_count
+        data_tests:
+          - not_null

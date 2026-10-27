@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: raw
+    database: AIRBNB_PORTFOLIO
+    schema: RAW
+    tables:
+      - name: listings
+        description: "Raw Airbnb listings for New York City, loaded from Inside Airbnb (90 columns)."
+        columns:
+          - name: id
+            description: "Unique listing identifier"
+          - name: price
+            description: "Nightly price as loaded from CSV (string, may contain '$' or be null)"
+          - name: estimated_revenue_l365d
+            description: "Inside Airbnb estimate of revenue over the last 365 days (string)"
