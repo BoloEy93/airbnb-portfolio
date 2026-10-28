@@ -39,3 +39,25 @@ This project demonstrates a production-style analytics stack:
 ![Dashboard Screenshot 5](dashboard/assets/dashboard5.png)
 ![Dashboard Screenshot 6](dashboard/assets/dashboard6.png)
 ![Dashboard Screenshot 7](dashboard/assets/dashboard7.png)
+
+
+
+
+---
+
+# Project 2: NYC Airbnb Price Predictor (Machine Learning)
+
+## 🎯 Overview
+While Project 1 focused on descriptive analytics (what happened), Project 2 focuses on predictive analytics (what will happen). This project builds a machine learning model to predict the nightly price of an Airbnb listing based on its characteristics, neighbourhood, and host details.
+
+## 🧠 Technical Highlights
+- **Feature Engineering**: Engineered a pipeline using `ColumnTransformer` and `Pipeline` from Scikit-Learn to handle median imputation for missing numeric values, standard scaling, and One-Hot Encoding for categorical variables.
+- **Model Training**: Trained a `RandomForestRegressor` achieving an **R² of 0.65** and a **Mean Absolute Error (MAE) of $73.75**.
+- **Snowpark for Python**: Utilized Snowpark DataFrames to process data directly inside the Snowflake warehouse, eliminating the need to extract large datasets to a local environment.
+- **Snowflake Model Registry**: Versioned and deployed the trained model directly into Snowflake as `AIRBNB_PRICE_PREDICTOR` (v3), targeting the `WAREHOUSE` runtime for native SQL inference.
+- **Interactive UI**: Extended the Streamlit dashboard with a custom prediction page that accepts user inputs, executes a native Snowflake SQL inference query (`MODEL(...)!predict()`), and parses the JSON response.
+
+## 🚀 How to Run
+1. Navigate to the `dashboard` directory.
+2. Run `streamlit run app.py`.
+3. Use the left sidebar to switch between the **Market Analysis** dashboard and the **Price Predictor** ML tool.
